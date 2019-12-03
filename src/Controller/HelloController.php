@@ -3,10 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class HelloController
 {
-    public function sayHello()
+    /**
+     * @Route("/")
+     */
+    public function Hello()
     {
         return new Response('Hello EveryOne !');
     }
