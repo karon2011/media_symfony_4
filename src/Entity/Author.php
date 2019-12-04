@@ -1,10 +1,10 @@
 <?php
 
 namespace App\Entity;
-
+use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
-
 /**
+ * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\AuthorRepository")
  */
 class Author
@@ -34,18 +34,6 @@ class Author
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAuthorId(): ?int
-    {
-        return $this->authorId;
-    }
-
-    public function setAuthorId(int $authorId): self
-    {
-        $this->authorId = $authorId;
-
-        return $this;
     }
 
     public function getName(): ?string
