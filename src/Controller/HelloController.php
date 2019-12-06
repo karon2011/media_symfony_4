@@ -8,10 +8,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class HelloController
 {
     /**
-     * @Route("/")
+     * @Route("/hello")
      */
     public function Hello()
     {
-        return new Response('Hello EveryOne !');
+        return new Response('This is the Black 4 App. Hello Everyone !');
     }
 }
