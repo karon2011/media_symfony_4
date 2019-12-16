@@ -76,7 +76,7 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['userName' => $credentials['userName']]);
 
         if (!$user) {
-            dump("!user");die;
+            dump("No user founded !!!");die;
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('User Name could not be found.');
         }
@@ -101,7 +101,7 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         // }
 
         // For example : 
-        return new RedirectResponse($this->urlGenerator->generate('home_page'));
+        return new RedirectResponse($this->urlGenerator->generate('author'));
         // return new RedirectResponse($this->router->generate('author'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
         // dd('Success! You are logged In', $request);
