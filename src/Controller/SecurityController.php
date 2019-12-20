@@ -9,6 +9,18 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends AbstractController
 {
+
+    // /**
+    //  * @Route("/registration", name="security_registration")
+    //  */
+    // public function registration()
+    // {
+    //     $user = new User();
+    //     $form = $this->createForm(registrationType::class, $user)
+
+    //     return $this->render('security/registration')
+    // }
+
     /**
      * @Route("/login", name="app_login")
      */
