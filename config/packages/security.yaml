@@ -7,6 +7,11 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+    encoders:
+        App\Entity\User:
+            algorithm: auto
+            cost: 12
+    
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
