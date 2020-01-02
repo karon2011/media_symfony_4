@@ -2,13 +2,16 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity(fields={"email"}, message="Existe déjà !")
  */
 class User implements UserInterface
 {
@@ -26,13 +29,24 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Email()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min = 6, max = 20,     
+     * minMessage = "Your Password must be at least {{ limit }} characters long",
+     * maxMessage = "Your Password cannot be longer than {{ limit }} characters")
+     * \EqualTo(propertyPath="confirm_password")
      */
     private $password;
+
+    // Public, no getter & setter and no ORM properties, not in th DB, only for confirmation correct pwd twice
+     /**
+     * @Assert\EqualTo(propertyPath="password", message="votre mot de passe doit être identique à la confirmation du mot de passe")
+     */
+    public $confirm_password;
 
     /**
      * @ORM\Column(type="date", nullable=true)
