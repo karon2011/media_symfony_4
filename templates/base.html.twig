@@ -17,10 +17,10 @@
   <div class="collapse navbar-collapse" id="navbarColor01">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/home">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="#">Authors</a>
+        <a class="nav-link" href="/author">Authors</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#">Records</a>
@@ -28,6 +28,18 @@
       <li class="nav-item">
         <a class="nav-link" href="#">About</a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="/registration">Registration</a>
+      </li>
+      {% if not app.user %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_login') }}">Login</a>
+      </li>
+      {% else %}
+      <li class="nav-item">
+        <a class="nav-link" href="{{ path('app_logout') }}">Logout</a>
+      </li>
+      {% endif %}
     </ul>
     <form class="form-inline my-2 my-lg-0">
       <input class="form-control mr-sm-2" type="text" placeholder="Search">

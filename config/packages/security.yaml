@@ -6,7 +6,7 @@ security:
         app_user_provider:
             entity:
                 class: App\Entity\User
-                property: email
+                property: userName
     encoders:
         App\Entity\User:
             algorithm: auto
@@ -22,15 +22,22 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginUserAuthenticator
+
+            form_login:
+                login_path: app_login
+                check_path: app_login
+
             logout:
                 path: app_logout
                 # where to redirect after logout
-                # target: app_any_route
-            
+                target: home
+
+            provider: app_user_provider
+
             remember_me:
                 secret:   '%kernel.secret%'
-                lifetime: 2592000 # 30 days in seconds
-
+                lifetime: 3600 # in seconds
+            
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication
 
