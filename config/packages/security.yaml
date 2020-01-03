@@ -26,6 +26,7 @@ security:
             form_login:
                 login_path: app_login
                 check_path: app_login
+                csrf_token_generator: security.csrf.token_manager
 
             logout:
                 path: app_logout

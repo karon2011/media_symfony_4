@@ -99,14 +99,14 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-            return new RedirectResponse($targetPath);
-        }
+        // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+        //     return new RedirectResponse($targetPath);
+        // }
 
         // For example : 
         
         // return new RedirectResponse($this->urlGenerator->generate('author'));
-        // return $this->render('author/author.html.twig');
+        return $this->render('author/author.html.twig');
         // return new RedirectResponse($this->router->generate('author'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
         // dd('Success! You are logged In', $request);
