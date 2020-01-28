@@ -15,11 +15,13 @@ use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -53,8 +55,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
     // If we return true, Symfony will immediately call getCredentials()
     public function getCredentials(Request $request)
     {
-        // dump($request->request->all());
-        // die;
         $credentials = [
             'userName' => $request->request->get('userName'),
             'password' => $request->request->get('password'),
@@ -64,13 +64,13 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
             Security::LAST_USERNAME,
             $credentials['userName']
         );
-        // dd("Credentials", $credentials);die;
         return $credentials;
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
+
         if (!$this->csrfTokenManager->isTokenValid($token)) {
             throw new InvalidCsrfTokenException();
         }
@@ -78,12 +78,10 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['userName' => $credentials['userName']]);
 
         if (!$user) {
-            dump("No user founded !!!");die;
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('User Name could not be found.');
         }
 
-        // dump("user", $user);die;
         return $user;
     }
 
@@ -95,21 +93,34 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         // If there are no credentials to check, you can just return true
         // return true;
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+ 
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        // if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
-        //     return new RedirectResponse($targetPath);
-        // }
+        if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
+            return new RedirectResponse($targetPath);
+        }
 
         // For example : 
         
-        // return new RedirectResponse($this->urlGenerator->generate('author'));
-        return $this->render('author/author.html.twig');
+        return new RedirectResponse($this->urlGenerator->generate('author'));
+        // return $this->render('home/home.html.twig');
         // return new RedirectResponse($this->router->generate('author'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
         // dd('Success! You are logged In', $request);
+    }
+
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    {
+        $data = [
+            'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+
+            // or to translate this message
+            // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
+        ];
+
+        return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
     protected function getLoginUrl()

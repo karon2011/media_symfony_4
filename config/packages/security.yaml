@@ -10,7 +10,7 @@ security:
     encoders:
         App\Entity\User:
             algorithm: auto
-            cost: 12
+            cost: 4
     
     firewalls:
         dev:
@@ -22,6 +22,10 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginUserAuthenticator
+                    # - App\Security\TokenAuthenticator
+
+            # if you want, disable storing the user in the session
+            # stateless: true
 
             form_login:
                 login_path: app_login

@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use Serializable;
 use Doctrine\ORM\Mapping as ORM;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -48,6 +49,8 @@ class User implements UserInterface
      * @Assert\EqualTo(propertyPath="password", message="votre mot de passe doit être identique à la confirmation du mot de passe")
      */
     public $confirm_password;
+
+    public $salt;
 
     /**
      * @ORM\Column(type="date", nullable=true)
@@ -171,13 +174,34 @@ class User implements UserInterface
         return $this;
     }
 
+    // /**
+    //  * @see UserInterface
+    //  */
+    // public function getSalt()
+    // {
+    //     // not needed for apps that do not check user passwords
+    // }
+
     /**
-     * @see UserInterface
+     * Set salt
+     * @param string $salt
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+        return $this;
+    }
+ 
+    /**
+     * Get salt
+     * @return string
      */
     public function getSalt()
     {
-        // not needed for apps that do not check user passwords
+        return $this->salt;
     }
+
     /**
      * @see UserInterface
      */
@@ -185,5 +209,64 @@ class User implements UserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        if (!$user instanceof WebserviceUser) {
+            return false;
+        }
+
+        if ($this->password !== $user->getPassword()) {
+            return false;
+        }
+
+        if ($this->salt !== $user->getSalt()) {
+            return false;
+        }
+
+        if ($this->username !== $user->getUsername()) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    /**
+     * String representation of object
+     * @link https://php.net/manual/en/serializable.serialize.php
+     * @return string the string representation of the object or null
+     * @since 5.1.0
+     */
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->userName,
+            $this->email,
+            $this->firstName,
+            $this->lastName,
+            $this->password
+        ]);
+    }
+ 
+    /**
+     * Constructs the object
+     * @link https://php.net/manual/en/serializable.unserialize.php
+     * @param string $serialized <p>
+     * The string representation of the object.
+     * </p>
+     * @return void
+     * @since 5.1.0
+     */
+    public function unserialize($serialized)
+    {
+        list($this->id,
+            $this->userName,
+            $this->email,
+            $this->firstName,
+            $this->lastName,
+            $this->password) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
