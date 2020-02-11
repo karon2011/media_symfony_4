@@ -16,5 +16,21 @@
         <li>Your controller at <code><a href="{{ 'C:/Nabil/Symfony/Symfony_4/black4/src/Controller/UserController.php'|file_link(0) }}">src/Controller/UserController.php</a></code></li>
         <li>Your template at <code><a href="{{ 'C:/Nabil/Symfony/Symfony_4/black4/templates/user/index.html.twig'|file_link(0) }}">templates/user/index.html.twig</a></code></li>
     </ul>
+
+    <ul>
+        {% for user in users %}
+            <li>User Id : {{ user.id }} .User name : {{ user.userName  }} . Email : {{ user.email }} </li>
+        {% endfor %}
+    </ul>
 </div>
+
+{# <div>
+    <span>
+        User Id : {{ user.id }}
+    </span>
+    <br>
+    <span>
+        UserName : {{ user.userName }}
+    </span>
+</div> #}
 {% endblock %}

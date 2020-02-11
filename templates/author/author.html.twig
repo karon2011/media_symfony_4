@@ -18,4 +18,10 @@
         <li>Your template at <code><a href="{{ 'C:/Nabil/Symfony/Symfony_4/black4/templates/author/index.html.twig'|file_link(0) }}">templates/author/index.html.twig</a></code></li>
     </ul>
 </div> #}
+
+<ul>
+    {% for author in authors %}
+        <li>Id : {{ author.id }} . Name : {{ author.name  }} . Origin : {{ author.origin }} </li>
+    {% endfor %}
+</ul>
 {% endblock %}

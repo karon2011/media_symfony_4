@@ -7,21 +7,23 @@ use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Csrf\CsrfToken;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\AuthenticationException;
 
 class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
 {
@@ -81,7 +83,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
             // fail authentication with a custom error
             throw new CustomUserMessageAuthenticationException('User Name could not be found.');
         }
-
         return $user;
     }
 
@@ -93,7 +94,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         // If there are no credentials to check, you can just return true
         // return true;
         return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
- 
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -104,7 +104,7 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
 
         // For example : 
         
-        return new RedirectResponse($this->urlGenerator->generate('author'));
+        return new RedirectResponse($this->urlGenerator->generate('home'));
         // return $this->render('home/home.html.twig');
         // return new RedirectResponse($this->router->generate('author'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
@@ -119,7 +119,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
             // or to translate this message
             // $this->translator->trans($exception->getMessageKey(), $exception->getMessageData())
         ];
-
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
