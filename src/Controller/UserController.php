@@ -36,28 +36,28 @@ class UserController extends AbstractController
     //     ]);
     // }
 
-    // /**
-    //  * @Route("/users/edit/{id}")
-    //  */
-    // public function updateUser($id)
-    // {
-    //     $entityManager = $this->getDoctrine()->getManager();
-    //     $user = $entityManager->getRepository(User::class)->find($id);
+    /**
+     * @Route("/users/edit/{id}")
+     */
+    public function updateUser($id)
+    {
+        $entityManager = $this->getDoctrine()->getManager();
+        $user = $entityManager->getRepository(User::class)->find($id);
 
-    //     if (!$user) {
-    //         throw $this->createNotFoundException(
-    //             'No user found for id '.$id
-    //         );
-    //     }
+        if (!$user) {
+            throw $this->createNotFoundException(
+                'No user found for id '.$id
+            );
+        }
 
-    //     $user->setEmail('New Email !');
-    //     $user->setPassword('New Password !');
-    //     $entityManager->flush();
+        $user->setEmail('New Email !');
+        $user->setPassword('New Password !');
+        $entityManager->flush();
 
-    //     return $this->redirectToRoute('users_show', [
-    //         'id' => $user->getId()
-    //     ]);
-    // }
+        return $this->redirectToRoute('users_show', [
+            'id' => $user->getId()
+        ]);
+    }
 
     // /**
     //  * @Route("/users/edit/{id}")

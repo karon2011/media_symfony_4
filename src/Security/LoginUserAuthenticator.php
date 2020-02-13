@@ -47,8 +47,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
     {
         // do your work when we're POSTing to the login page
         // return true if this request contains authentication info that this authenticator knows how to process. And if not, to return false
-        // dump('app_login' === $request->attributes->get('_route')
-        //     && $request->isMethod('POST'));
 
         return 'app_login' === $request->attributes->get('_route')
             && $request->isMethod('POST');
@@ -58,13 +56,13 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'userName' => $request->request->get('userName'),
+            'username' => $request->request->get('username'),
             'password' => $request->request->get('password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
             Security::LAST_USERNAME,
-            $credentials['userName']
+            $credentials['username']
         );
         return $credentials;
     }
@@ -77,7 +75,7 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
             throw new InvalidCsrfTokenException();
         }
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['userName' => $credentials['userName']]);
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
 
         if (!$user) {
             // fail authentication with a custom error

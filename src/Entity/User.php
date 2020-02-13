@@ -13,7 +13,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  * @ApiResource()
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @UniqueEntity(fields={"email"}, message="Email existe déjà !")
- * @UniqueEntity(fields={"userName"}, message="Username existe déjà !")
+ * @UniqueEntity(fields={"username"}, message="Username existe déjà !")
  */
 class User implements UserInterface
 {
@@ -27,7 +27,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $userName;
+    private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -40,7 +40,7 @@ class User implements UserInterface
      * @Assert\Length(min = 6, max = 20,     
      * minMessage = "Your Password must be at least {{ limit }} characters long",
      * maxMessage = "Your Password cannot be longer than {{ limit }} characters")
-     * \EqualTo(propertyPath="confirm_password")
+     * \EqualTo(propertyPath="confirmpassword")
      */
     private $password;
 
@@ -48,7 +48,7 @@ class User implements UserInterface
      /**
      * @Assert\EqualTo(propertyPath="password", message="votre mot de passe doit être identique à la confirmation du mot de passe")
      */
-    public $confirm_password;
+    public $confirmpassword;
 
     public $salt;
 
@@ -60,12 +60,12 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $firstName;
+    private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $lastName;
+    private $lastname;
 
     /**
      * @ORM\Column(type="json")
@@ -82,14 +82,14 @@ class User implements UserInterface
      *
      * @see UserInterface
      */
-    public function getUserName(): ?string
+    public function getUsername(): ?string
     {
-        return $this->userName;
+        return $this->username;
     }
 
-    public function setUserName(string $userName): self
+    public function setUsername(string $username): self
     {
-        $this->userName = $userName;
+        $this->username = $username;
 
         return $this;
     }
@@ -133,26 +133,26 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getFirstName(): ?string
+    public function getFirstname(): ?string
     {
-        return $this->firstName;
+        return $this->firstname;
     }
 
-    public function setFirstName(string $firstName): self
+    public function setFirstname(string $firstname): self
     {
-        $this->firstName = $firstName;
+        $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLastName(): ?string
+    public function getLastname(): ?string
     {
-        return $this->lastName;
+        return $this->lastname;
     }
 
-    public function setLastName(string $lastName): self
+    public function setLastname(string $lastname): self
     {
-        $this->lastName = $lastName;
+        $this->lastname = $lastname;
 
         return $this;
     }
@@ -243,10 +243,10 @@ class User implements UserInterface
     {
         return serialize([
             $this->id,
-            $this->userName,
+            $this->username,
             $this->email,
-            $this->firstName,
-            $this->lastName,
+            $this->firstname,
+            $this->lastname,
             $this->password
         ]);
     }
@@ -263,10 +263,10 @@ class User implements UserInterface
     public function unserialize($serialized)
     {
         list($this->id,
-            $this->userName,
+            $this->username,
             $this->email,
-            $this->firstName,
-            $this->lastName,
+            $this->firstname,
+            $this->lastname,
             $this->password) = unserialize($serialized, ['allowed_classes' => false]);
     }
 }
