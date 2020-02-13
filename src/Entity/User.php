@@ -8,6 +8,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ApiResource()
@@ -26,12 +27,14 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups("main")
      */
     private $username;
 
     /**
      * @ORM\Column(type="string", length=255)
      * @Assert\Email()
+     * @Groups("main")
      */
     private $email;
 
@@ -54,16 +57,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="date", nullable=true)
+     * @Groups("main")
      */
     private $birthday;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("main")
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups("main")
      */
     private $lastname;
 
