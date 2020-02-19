@@ -11,7 +11,7 @@ class AuthorController extends AbstractController
     /**
      * @Route("/authors", name="authors_app")
      */
-    public function author()
+    public function index()
     {
 
         $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
