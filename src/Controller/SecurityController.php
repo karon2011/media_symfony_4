@@ -3,11 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\ApiToken;
 use App\Form\RegistrationType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -30,8 +32,9 @@ class SecurityController extends AbstractController
             
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-
+            $apiToken = new ApiToken($user);
             $manager->persist($user);
+            $manager->persist($apiToken);
             $manager->flush();
 
             return $this->redirectToRoute('app_login');
@@ -48,7 +51,7 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         if ($this->getUser()) {
-            return $this->redirectToRoute('/authors');
+            return $this->redirectToRoute('authors_app');
         }
 
         // get the login error if there is one

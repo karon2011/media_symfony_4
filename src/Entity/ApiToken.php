@@ -9,6 +9,14 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class ApiToken
 {
+ 
+    public function __construct(User $user)
+    {
+        $this->token = bin2hex(random_bytes(60));
+        $this->user = $user;
+        $this->expiresAt = new \DateTime('+2400 hour');
+    }
+
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -31,13 +39,6 @@ class ApiToken
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
-    public function __construct(User $user)
-    {
-        $this->token = bin2hex(random_bytes(60));
-        $this->user = $user;
-        $this->expiresAt = new \DateTime('+1 hour');
-    }
 
     public function renewExpiresAt()
     {

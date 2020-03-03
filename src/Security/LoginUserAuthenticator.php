@@ -56,8 +56,8 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
     public function getCredentials(Request $request)
     {
         $credentials = [
-            'username' => $request->request->get('username'),
-            'password' => $request->request->get('password'),
+            'username' => $request->request->get('_username'),
+            'password' => $request->request->get('_password'),
             'csrf_token' => $request->request->get('_csrf_token'),
         ];
         $request->getSession()->set(
@@ -106,7 +106,6 @@ class LoginUserAuthenticator extends AbstractFormLoginAuthenticator
         // return $this->render('home/home.html.twig');
         // return new RedirectResponse($this->router->generate('author'));
         // throw new \Exception('TODO: provide a valid redirect inside ' . __FILE__);
-        // dd('Success! You are logged In', $request);
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
